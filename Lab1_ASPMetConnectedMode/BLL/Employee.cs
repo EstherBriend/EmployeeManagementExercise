@@ -1,6 +1,7 @@
 ﻿using Lab1_ASPMetConnectedMode.DAL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -52,6 +53,11 @@ namespace Lab1_ASPMetConnectedMode.BLL
         public void Delete(int employeeID)
         {
             EmployeeDB.DeleteEmployee(employeeID);
+        }
+
+        public void Update(Employee employee)
+        {
+            EmployeeDB.UpdateEmployee(employee);
         }
     }
 }

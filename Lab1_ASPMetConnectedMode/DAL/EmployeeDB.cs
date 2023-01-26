@@ -116,5 +116,54 @@ namespace Lab1_ASPMetConnectedMode.DAL
                 cmdDelete.ExecuteNonQuery();
             }
         }
+
+        public static void UpdateEmployee(Employee emp)
+        {
+            //Build sql command depending of the input data
+            String sqlCommandText = "UPDATE Employees SET ";
+
+            // Flag to know if it is the first column added to the command text
+            bool first = true;
+
+            //Check input for First Name
+            if (!string.IsNullOrEmpty(emp.FirstName))
+            {
+                sqlCommandText += $"FirstName='{emp.FirstName}'";
+                first = false;
+            }
+            //Check input for Last Name
+            if (!string.IsNullOrEmpty(emp.LastName))
+            {
+                if (!first)
+                {
+                    sqlCommandText += ", ";
+                }
+                sqlCommandText += $"LastName='{emp.LastName}'";
+                first = false;
+            }
+            //Chek input for Job Title
+            if (!String.IsNullOrEmpty(emp.JobTitle))
+            {
+                if (!first)
+                {
+                    sqlCommandText += ", ";
+                }
+                sqlCommandText += $"JobTitle='{emp.JobTitle}'";
+                first = false;
+            }
+
+            sqlCommandText += $" WHERE EmployeeID={emp.EmployeeId};";
+
+            //Execute the update command
+            using (SqlConnection con = UtilityDB.ConnectDB())
+            {
+
+                SqlCommand cmdUpdate = new SqlCommand();
+                cmdUpdate.Connection = con;
+                cmdUpdate.CommandText = sqlCommandText;
+                cmdUpdate.ExecuteNonQuery();
+
+            }
+        }
     }
 }

@@ -41,7 +41,8 @@ namespace Lab1_ASPMetConnectedMode.GUI
             employee.EmployeeId = Convert.ToInt32(tempInput);
 
             // Check duplicate ID
-            if (employee.IsDuplicateEmployeeID(employee.EmployeeId)){
+            if (employee.IsDuplicateEmployeeID(employee.EmployeeId))
+            {
                 MessageBox.Show("This ID already exist.", "Duplicate ID");
                 txtEmployeeId.Text = "";
                 txtEmployeeId.Focus();
@@ -74,7 +75,8 @@ namespace Lab1_ASPMetConnectedMode.GUI
 
             // Validate Job Title
             tempInput = txtJobTitle.Text.Trim();
-            if (String.IsNullOrWhiteSpace(tempInput)){
+            if (String.IsNullOrWhiteSpace(tempInput))
+            {
                 MessageBox.Show("Job Title cannot be empty", "Invalid Job Title");
                 txtJobTitle.Focus();
                 return;
@@ -127,7 +129,7 @@ namespace Lab1_ASPMetConnectedMode.GUI
             }
 
             // Search by First Name
-            if(DropDownSearchBy.SelectedValue == "First Name")
+            if (DropDownSearchBy.SelectedValue == "First Name")
             {
 
                 //Validate Name input
@@ -146,7 +148,7 @@ namespace Lab1_ASPMetConnectedMode.GUI
             }
 
             // Search by Last Name
-            if(DropDownSearchBy.SelectedValue == "Last Name")
+            if (DropDownSearchBy.SelectedValue == "Last Name")
             {
                 //Validate Name input
                 if (!Validator.IsValidName(tempInput))
@@ -163,7 +165,7 @@ namespace Lab1_ASPMetConnectedMode.GUI
             }
 
             // Search by Job Title
-            if(DropDownSearchBy.SelectedValue == "Job Title")
+            if (DropDownSearchBy.SelectedValue == "Job Title")
             {
                 string searchedJobTitle = tempInput;
                 // Search employee by Job Title
@@ -189,7 +191,7 @@ namespace Lab1_ASPMetConnectedMode.GUI
         {
             // Create an employee to access employee method
             Employee emp = new Employee();
-            
+
             // Validate EmployeeID input
             string tempInput = txtEmployeeId.Text.Trim();
 
@@ -223,10 +225,15 @@ namespace Lab1_ASPMetConnectedMode.GUI
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
 
-            // Create an employee to access employee method
+            // Create an employee and give him the input value as parameters
             Employee emp = new Employee();
 
-            // Validate EmployeeID input
+            
+            emp.FirstName = txtFirstName.Text.Trim();
+            emp.LastName = txtLastName.Text.Trim();
+            emp.JobTitle = txtJobTitle.Text.Trim();
+
+            // Validate EmployeeID input and put it as paramenter for emp
             string tempInput = txtEmployeeId.Text.Trim();
 
             if (!Validator.IsValidId(tempInput))
@@ -237,19 +244,28 @@ namespace Lab1_ASPMetConnectedMode.GUI
                 return;
             }
 
-            int searchedID = Convert.ToInt32(tempInput);
+            emp.EmployeeId = Convert.ToInt32(txtEmployeeId.Text.Trim());
 
             // Check if EmployeeID exist
 
-            if (emp.IsDuplicateEmployeeID(emp.EmployeeId))
+            if (!emp.IsDuplicateEmployeeID(emp.EmployeeId))
             {
                 MessageBox.Show("This ID does not exist.", "ID not found");
                 txtEmployeeId.Text = "";
                 txtEmployeeId.Focus();
                 return;
             }
+            //Check if change have been made
+            if (String.IsNullOrWhiteSpace(txtFirstName.Text) && String.IsNullOrWhiteSpace(txtLastName.Text) && String.IsNullOrWhiteSpace(txtJobTitle.Text))
+            {
+                MessageBox.Show("No change has been made.You need to enter a new First Name, Last Name or Job Title", "No change");
+                return;
+            }
 
             //Update Employee
+            emp.Update(emp);
+            MessageBox.Show("Employee updated", "Update successful");
+            showAllEmployees();
 
         }
 
